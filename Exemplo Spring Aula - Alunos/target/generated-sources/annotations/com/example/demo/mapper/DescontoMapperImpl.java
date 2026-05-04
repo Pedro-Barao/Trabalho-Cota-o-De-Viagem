@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-29T20:56:22-0300",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.11 (Oracle Corporation)"
+    date = "2026-05-04T10:37:29-0300",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class DescontoMapperImpl implements DescontoMapper {
@@ -23,11 +23,11 @@ public class DescontoMapperImpl implements DescontoMapper {
 
         DescontoDTO descontoDTO = new DescontoDTO();
 
-        descontoDTO.setId( desconto.getId() );
         descontoDTO.setCotacaoId( desconto.getCotacaoId() );
-        descontoDTO.setValorDesconto( desconto.getValorDesconto() );
-        descontoDTO.setDescricao( desconto.getDescricao() );
         descontoDTO.setDataAplicacao( desconto.getDataAplicacao() );
+        descontoDTO.setDescricao( desconto.getDescricao() );
+        descontoDTO.setId( desconto.getId() );
+        descontoDTO.setValorDesconto( desconto.getValorDesconto() );
 
         return descontoDTO;
     }
@@ -40,11 +40,11 @@ public class DescontoMapperImpl implements DescontoMapper {
 
         Desconto desconto = new Desconto();
 
-        desconto.setId( descontoDTO.getId() );
         desconto.setCotacaoId( descontoDTO.getCotacaoId() );
-        desconto.setValorDesconto( descontoDTO.getValorDesconto() );
-        desconto.setDescricao( descontoDTO.getDescricao() );
         desconto.setDataAplicacao( descontoDTO.getDataAplicacao() );
+        desconto.setDescricao( descontoDTO.getDescricao() );
+        desconto.setId( descontoDTO.getId() );
+        desconto.setValorDesconto( descontoDTO.getValorDesconto() );
 
         return desconto;
     }
