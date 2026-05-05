@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-05-04T10:39:56-0300",
+    date = "2026-05-05T19:32:30-0300",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -27,6 +27,10 @@ public class DestinoMapperImpl implements DestinoMapper {
             destinoDTO.setId( destinos.getId() );
         }
         destinoDTO.setNome( destinos.getNome() );
+        destinoDTO.setDescricao( destinos.getDescricao() );
+        if ( destinos.getLocalizacao() != null ) {
+            destinoDTO.setLocalizacao( Double.parseDouble( destinos.getLocalizacao() ) );
+        }
 
         return destinoDTO;
     }
@@ -41,6 +45,8 @@ public class DestinoMapperImpl implements DestinoMapper {
 
         destinos.setId( destinoDTO.getId() );
         destinos.setNome( destinoDTO.getNome() );
+        destinos.setDescricao( destinoDTO.getDescricao() );
+        destinos.setLocalizacao( String.valueOf( destinoDTO.getLocalizacao() ) );
 
         return destinos;
     }

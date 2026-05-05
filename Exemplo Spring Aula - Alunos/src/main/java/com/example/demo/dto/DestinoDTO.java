@@ -20,6 +20,8 @@ public class DestinoDTO {
     @NotNull(message = "A descrição é um campo obrigatório.")
     private String descricao;
 
+    @NotNull(message = "A distância é um campo obrigatório.")
+    private double localizacao;
 
     @NotNull(message = "O preço por pessoa é obrigatório")
     private BigDecimal precoPorPessoa;

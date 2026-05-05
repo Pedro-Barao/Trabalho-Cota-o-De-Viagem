@@ -31,6 +31,9 @@ public class Destinos {
     private String nome;
 
     @Column(nullable = false)
+    private String descricao;
+
+    @Column(nullable = false)
     private String localizacao;
 
     @Column(nullable = false)
