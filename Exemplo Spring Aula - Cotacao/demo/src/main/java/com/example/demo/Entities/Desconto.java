@@ -27,8 +27,9 @@ public class Desconto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long cotacaoId;
+    @ManyToOne
+    @JoinColumn(name = "cotacao_id", nullable = false)
+    private Cotacao cotacao;
 
     @Column(nullable = false)
     private BigDecimal valorDesconto;
@@ -39,4 +40,4 @@ public class Desconto {
     @Column(nullable = false)
     private LocalDateTime dataAplicacao;
 
-}
+} 
