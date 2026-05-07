@@ -10,4 +10,6 @@ public interface IDescontoRepository extends JpaRepository<Desconto, Long> {
 
     Optional<Desconto> findByCotacaoId(Long cotacaoId);
 
-}
+    boolean existsByDescricao(String descricao);
+
+} 
