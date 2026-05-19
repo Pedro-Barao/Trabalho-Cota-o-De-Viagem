@@ -37,6 +37,6 @@ public class Destinos {
     private String localizacao;
 
     @Column(nullable = false)
-    private BigDecimal precoPorPessoa;
+    private BigDecimal preco;
 
 }

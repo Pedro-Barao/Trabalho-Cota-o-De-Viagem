@@ -44,7 +44,7 @@ public class DescontoController {
 
     }
 
-    @Operation(summary = "Busca um desconto por 10", description = "Retorna os detalhes de um desconto")
+    @Operation(summary = "Busca um desconto por ID", description = "Retorna os detalhes de um desconto")
     @GetMapping("/{id}")
     public ResponseEntity<DescontoDTO> buscarPorId(@PathVariable Long id)
     {
@@ -68,7 +68,7 @@ public class DescontoController {
             ApiResponse<DescontoDTO> response = new ApiResponse<>(savedDesconto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-             
+
         } catch (IllegalArgumentException e)
         {
 

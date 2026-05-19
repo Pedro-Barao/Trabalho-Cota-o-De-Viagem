@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entities.Desconto;
@@ -28,7 +28,7 @@ public class DescontoService {
         
     }
 
-    public Optional<DescontoDTO> buscarPorId(@NonNull Long id) 
+    public Optional<DescontoDTO> buscarPorId(Long id) 
     {
 
         return descontoRepository.findById(id).map(descontoMapper::toDTO);
@@ -37,6 +37,11 @@ public class DescontoService {
 
     public DescontoDTO salvar(DescontoDTO descontoDTO)
     {
+
+        // validação extra
+        if (descontoDTO.getValorDesconto().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do desconto deve ser maior que zero");
+        }
 
         Desconto desconto = descontoMapper.toEntity(descontoDTO);
         

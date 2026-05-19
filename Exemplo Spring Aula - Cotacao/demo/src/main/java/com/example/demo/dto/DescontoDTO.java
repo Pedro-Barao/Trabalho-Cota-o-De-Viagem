@@ -6,10 +6,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -22,16 +23,13 @@ public class DescontoDTO {
     private Long cotacaoId;
 
     @NotNull(message = "Informe o valor do desconto")
-    @DecimalMin(value = "0.01", message = "O valor do desconto deve ser maior que zero")
-    @DecimalMax(value = "0.5", message = "O valor máximo do desconto é 0.5")
+    @Positive(message = "O valor do desconto deve ser maior que zero")
     private BigDecimal valorDesconto;
 
-    @NotBlank(message = "A descrição é obrigatória")
-    @Size(min = 5, max = 600, message = "A descrição deve conter entre 5 e 600 caracteres")
+    @NotBlank(message = "A descrição do desconto é obrigatória")
     private String descricao;
 
-    @NotNull(message = "A data de aplicação é obrigatória")
-    private LocalDateTime dataAplicacao;
-
+    @NotBlank(message = "Informe a data de aplicação do desconto")
+    private LocalDateTime dataAplicacao; 
     
-} 
+}
