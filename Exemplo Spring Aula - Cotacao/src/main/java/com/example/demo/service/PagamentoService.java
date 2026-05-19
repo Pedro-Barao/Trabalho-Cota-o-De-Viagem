@@ -18,20 +18,24 @@ public class PagamentoService {
     @Autowired
     private PagamentoMapper pagamentoMapper;
 
-    public PagamentoDTO salvar(PagamentoDTO dto) {
-        Pagamento entidade = pagamentoMapper.toEntity(dto);
-        return pagamentoMapper.toDTO(pagamentoRepository.save(entidade));
+    public List<PagamentoDTO> listarTodos() {
+        return pagamentoMapper.toDTOList(pagamentoRepository.findAll());
     }
 
     public Optional<PagamentoDTO> buscarPorId(Long id) {
         return pagamentoRepository.findById(id).map(pagamentoMapper::toDTO);
     }
 
-    public PagamentoDTO atualizarStatus(Long id, String status) {
-        Pagamento pagamento = pagamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
-        pagamento.setStatus(status);
+    public PagamentoDTO salvar(PagamentoDTO pagamentoDTO) {
+        Pagamento pagamento = pagamentoMapper.toEntity(pagamentoDTO);
         return pagamentoMapper.toDTO(pagamentoRepository.save(pagamento));
+    }
+
+    public PagamentoDTO atualizarStatus(Long id, String novoStatus) {
+        return pagamentoRepository.findById(id).map(pagamento -> {
+            pagamento.setStatus(novoStatus);
+            return pagamentoMapper.toDTO(pagamentoRepository.save(pagamento));
+        }).orElseThrow(() -> new IllegalArgumentException("Pagamento não encontrado com o ID: " + id));
     }
 
     public void deletar(Long id) {

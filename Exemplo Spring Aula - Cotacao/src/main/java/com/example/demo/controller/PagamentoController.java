@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Pagamento", description = "Endpoints para gerenciar pagamentos de cotações")
+@Tag(name = "Pagamento", description = "Endpoints para gerenciamento de pagamentos")
 @RestController
 @RequestMapping("/api/pagamentos")
 public class PagamentoController {
@@ -22,40 +22,47 @@ public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
 
-    @Operation(summary = "Registrar Pagamento", description = "Registra um novo pagamento no sistema")
+    @Operation(summary = "Lista todos os pagamentos")
+    @GetMapping
+    public ResponseEntity<List<PagamentoDTO>> listarPagamentos() {
+        List<PagamentoDTO> pagamentos = pagamentoService.listarTodos();
+        return ResponseEntity.ok(pagamentos);
+    }
+
+    @Operation(summary = "Busca um pagamento por ID")
+    @GetMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> buscarPorId(@PathVariable Long id) {
+        Optional<PagamentoDTO> pagamentoDTO = pagamentoService.buscarPorId(id);
+        return pagamentoDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Registrar um novo pagamento")
     @PostMapping
     public ResponseEntity<ApiResponse<PagamentoDTO>> registrarPagamento(@Valid @RequestBody PagamentoDTO pagamentoDTO) {
         try {
-            PagamentoDTO salvo = pagamentoService.salvar(pagamentoDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(salvo));
+            PagamentoDTO savedPagamento = pagamentoService.salvar(pagamentoDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(savedPagamento));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(new ErrorResponse("Argumento Inválido", e.getMessage())));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(new ErrorResponse("Erro ao registrar", e.getMessage())));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(new ErrorResponse("Erro Interno", e.getMessage())));
         }
     }
 
-    @Operation(summary = "Obter Pagamento por ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<PagamentoDTO> obterPorId(@PathVariable Long id) {
-        return pagamentoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @Operation(summary = "Atualizar Status do Pagamento")
+    @Operation(summary = "Atualiza o status de um pagamento")
     @PatchMapping("/{id}/status")
     public ResponseEntity<ApiResponse<PagamentoDTO>> atualizarStatus(@PathVariable Long id, @RequestBody String status) {
         try {
             PagamentoDTO atualizado = pagamentoService.atualizarStatus(id, status);
             return ResponseEntity.ok(new ApiResponse<>(atualizado));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(new ErrorResponse("Erro na atualização", e.getMessage())));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(new ErrorResponse("Erro ao atualizar status", e.getMessage())));
         }
     }
 
-    @Operation(summary = "Remover Pagamento")
+    @Operation(summary = "Deleta um pagamento")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarPagamento(@PathVariable Long id) {
         pagamentoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
