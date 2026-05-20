@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CotacaoDTO;
+import com.example.demo.service.CotacaoService;
 import com.example.demo.service.Utils.ApiResponse;
-import com.example.demo.service.Utils.CotacaoService;
 import com.example.demo.service.Utils.ErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,11 +68,6 @@ public class CotacaoController {
     public ResponseEntity<ApiResponse<CotacaoDTO>> atualizarStatus(@PathVariable Long id,
                                                                      @RequestBody Map<String, String> body) {
         String status = body.get("status");
-        if (status == null || status.isBlank()) {
-            ErrorResponse errorResponse = new ErrorResponse("Validacao", "O campo status é obrigatório");
-            return ResponseEntity.badRequest().body(new ApiResponse<>(errorResponse));
-        }
-
         ApiResponse<CotacaoDTO> response = cotacaoService.atualizarStatus(id, status);
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
