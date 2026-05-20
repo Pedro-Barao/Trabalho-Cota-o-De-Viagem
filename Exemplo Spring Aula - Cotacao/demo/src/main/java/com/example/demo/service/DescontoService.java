@@ -57,3 +57,37 @@ public class DescontoService {
     }
 
 }
+
+//--------
+    // Matheus 
+
+public DescontoDTO atualizar(Long id, DescontoDTO descontoDTO)
+{
+
+    Optional<Desconto> descontoExistente = descontoRepository.findById(id);
+
+    if (descontoExistente.isEmpty())
+    {
+        throw new IllegalArgumentException("Desconto não encontrado");
+    }
+
+    if (descontoDTO.getValorDesconto().compareTo(BigDecimal.ZERO) <= 0)
+    {
+        throw new IllegalArgumentException("O valor do desconto deve ser maior que zero");
+    }
+
+    Desconto desconto = descontoMapper.toEntity(descontoDTO);
+
+    desconto.setId(id);
+
+    return descontoMapper.toDTO(descontoRepository.save(desconto));
+
+    public Optional<DescontoDTO> buscarPorCotacaoId(Long cotacaoId)
+{
+
+    return descontoRepository.findByCotacaoId(cotacaoId)
+            .map(descontoMapper::toDTO);
+
+   }
+
+}
