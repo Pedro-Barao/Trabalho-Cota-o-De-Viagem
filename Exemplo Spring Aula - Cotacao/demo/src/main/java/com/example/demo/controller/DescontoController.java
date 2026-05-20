@@ -103,3 +103,55 @@ public class DescontoController {
     }
     
 }
+
+//------------
+    //Matheus
+
+    @Operation(summary = "Atualiza Desconto", description = "Atualiza os dados de um desconto existente")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<DescontoDTO>> atualizarDesconto(
+        @PathVariable Long id,
+        @Valid @RequestBody DescontoDTO descontoDTO)
+
+        {
+            try{
+
+                DescontoDTO descontoAtualizado = descontoService.atualizar(id, descontoDTO);
+
+                apiResponse<descontoDTO> response = new apiResponse<>(descontoAtualizado);
+
+                return ResponseEntity.ok(response);
+
+            } catch (IllegalArgumentException e)
+            {
+
+                ErrorResponse errorResponse = new ErrorResponse("Erro de validação", e.getMessage());
+
+                apiResponse<DescontoDTO> response = new apiResponse<>(errorResponse);
+
+                return ResponseEntity.badRequest().body(response);
+             
+                catch (Exception e)
+                {
+
+                    ErrorResponse errorResponse = new ErrorResponse("Erro interno", e.getMessage());
+
+                    apiResponse<DescontoDTO> response = new apiResponse<>(errorResponse);
+
+                    return ResponseEntity.satus(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+                }
+            
+            }
+
+            @Operation(summary = "Busca desconto por cotação", description = "Retorna um desconto baseado no id da cotação")
+            @GetMapping("/cotacao/{cotacaoId}")
+            public ResponseEntity<DescontoDTO> buscarPorCotacao(@PathVariable Long cotacaoId)
+        {
+
+            Optional<DescontoDTO> descontoDTO = descontoService.buscarPorCotacaoId(cotacaoId);
+
+            return descontoDTO.map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+
+        }
+        }
